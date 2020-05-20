@@ -38,4 +38,29 @@ public class PropertiesUtil {
     public static String getFeatureArff(){
         return props.getProperty("feature_arff_path");
     }
+
+    public static String getremoteIP(){
+        return props.getProperty("remoteIP");
+    }
+
+    public static String getRemoteRootName(){
+        return props.getProperty("remote_name");
+    }
+
+    public static String getgetRemoteRootPassword(){
+        return props.getProperty("remote_password");
+    }
+    public static String getRemotePcapPath(){
+        return props.getProperty("remote_pcap_path");
+    }
+    public static String getRemoteToLocalPath(){
+        return props.getProperty("remote_pcap_to_local_path");
+    }
+    public static String getHttpProxy(){
+        return props.getProperty("http_proxy");
+    }
+    public static int getHttpProxyPort(){
+        return Integer.parseInt(props.getProperty("http_proxy_port"));
+    }
+
 }

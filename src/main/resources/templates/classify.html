@@ -29,6 +29,7 @@
     <script type="text/javascript" th:src="@{/assets/js/transition.js}"></script>
     <script type="text/javascript" th:src="@{/assets/js/owl-carousel.js}"></script>
     <script type="text/javascript" th:src="@{/assets/js/custom.js}"></script>
+    <script type="text/javascript" th:src="@{/layer/layer.js}"></script>
 
     <style>
         .table thead tr {
@@ -182,4 +183,14 @@
 
 </div>
 </body>
+
+<script th:inline="javascript">
+    var result = [[${result}]];
+    if(JSON.stringify(result) !== '{}'){
+        if (result.code !== 1) {
+            layer.msg(result.msg);
+        }
+    }
+</script>
+
 </html>

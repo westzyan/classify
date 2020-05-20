@@ -6,11 +6,13 @@ import com.tor.classify.classify.AlgorithmUtil;
 import com.tor.classify.classify.ArffUtil;
 import com.tor.classify.domain.Flow;
 import com.tor.classify.domain.Model;
+import com.tor.classify.domain.Packet;
 import com.tor.classify.result.CodeMsg;
 import com.tor.classify.result.Result;
 import com.tor.classify.util.LabelUtil;
 import com.tor.classify.util.PropertiesUtil;
 import iscx.cs.unb.ca.ifm.ISCXFlowMeter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +22,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@Slf4j
 @Service
 public class ClassifyService {
 
     @Autowired
     private ModelService modelService;
+
+    @Autowired
+    private PacketService packetService;
 
 
     /**
@@ -86,7 +92,19 @@ public class ClassifyService {
             //更新csv
             updateFullCSV(fullCsvFile,  csvList, classifyResult);
             //TODO 插入数据库
-
+            String packetName = fullCsvFile.substring(fullCsvFile.lastIndexOf("ISCX_") + 5,fullCsvFile.length() - 4);
+            System.out.println(packetName);
+            String packetPath = PropertiesUtil.getPcapPath()  + packetName;
+            if (display.size() > 0){
+                Packet packet = new Packet();
+                packet.setPacketName(packetName);
+                packet.setCsvPath(fullCsvFile);
+                packet.setType("已判别Local");
+                packet.setPacketPath(packetPath);
+                if (packetService.insertPacket(packet) < 0){
+                    log.error("数据包插入失败:{}",packet.toString());
+                }
+            }
             System.out.println("测试成功结束！");
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -168,12 +186,12 @@ public class ClassifyService {
         return list;
     }
 
-//    public static void main(String[] args) throws IOException {
-////        CsvReader reader = new CsvReader("D:/zyan/classifyData/ISCX_tor1.pcap.csv");
-////        System.out.println(Arrays.toString(reader.getHeaders()));
-////        reader.getValues();
-////        String[] header = reader.getHeaders();
-////        reader.close();
+    public static void main(String[] args) throws IOException {
+//        CsvReader reader = new CsvReader("D:/zyan/classifyData/ISCX_tor1.pcap.csv");
+//        System.out.println(Arrays.toString(reader.getHeaders()));
+//        reader.getValues();
+//        String[] header = reader.getHeaders();
+//        reader.close();
 //        CsvWriter writer = new CsvWriter("D:/zyan/classifyData/ISCX_tor1.pcap111111.csv",',',StandardCharsets.UTF_8);
 //        String string = "Source IP, Source Port, Destination IP, Destination Port, Protocol, Flow Duration, Flow Bytes/s, Flow Packets/s, Flow IAT Mean, Flow IAT Std, Flow IAT Max, Flow IAT Min,Fwd IAT Mean, Fwd IAT Std, Fwd IAT Max, Fwd IAT Min,Bwd IAT Mean, Bwd IAT Std, Bwd IAT Max, Bwd IAT Min,Active Mean, Active Std, Active Max, Active Min,Idle Mean, Idle Std, Idle Max, Idle Min,label\n";
 //        String[] header = string.split(", ");
@@ -181,5 +199,10 @@ public class ClassifyService {
 //        String[] s = new String[]{"222","333","33"};
 //        writer.writeRecord(s);
 //        writer.close();
-//    }
+        String csvFileName = "ISCX_tor1.pcap.csv";
+        String packetName = csvFileName.substring(csvFileName.lastIndexOf("ISCX_") + 5,csvFileName.length() - 4);
+        String packetPath = PropertiesUtil.getPcapPath()  + packetName;
+        System.out.println(packetName);
+        System.out.println(packetPath);
+    }
 }
