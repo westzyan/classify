@@ -49,7 +49,7 @@ public class GrabPacketsController {
 //        String protocol;
 //        int selectWay = 0;
         log.info("grab_packets:参数为：grabPlace：{}，command：{}，packetCount:{},protocol:{},selectWay:{}",grabPlace, command, packetCount, protocol, selectWay);
-//        grabPacketsService.grabPackets(fileName, grabPlace, command, packetCount, protocol, selectWay);
+        grabPacketsService.grabPackets(fileName, grabPlace, command, packetCount, protocol, selectWay);
         response.setContentType("text/html;charset=utf-8");
         response.getWriter().write("<script>alert('正在抓包，抓包成功之后将存入数据库，数据包名称为："+ fileName + "！网页将跳转到抓包页面');  window.location='index';</script>");
         response.getWriter().flush();

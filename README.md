@@ -40,3 +40,5 @@ sudo yum install -y tcpdump
 在tcpdump所在目录下执行
 sudo chmod u+s tcpdump
 ```
+
+还需要下载Geo-lite文件，放到resources

@@ -3,6 +3,7 @@ package com.tor.classify.service;
 import com.jcraft.jsch.*;
 import com.tor.classify.domain.Packet;
 import com.tor.classify.util.LabelUtil;
+import com.tor.classify.util.MyUserInfo;
 import com.tor.classify.util.PropertiesUtil;
 import iscx.cs.unb.ca.ifm.ISCXFlowMeter;
 import lombok.extern.slf4j.Slf4j;
@@ -119,7 +120,7 @@ public class GrabPacketsService {
 //        ProxyHTTP proxyHTTP= new  ProxyHTTP(PropertiesUtil.getHttpProxy(),PropertiesUtil.getHttpProxyPort());
 //        session.setProxy(proxyHTTP);
 
-        session.setPassword(PropertiesUtil.getgetRemoteRootPassword()); // 设置密码
+        session.setPassword(PropertiesUtil.getRemoteRootPassword()); // 设置密码
         session.setUserInfo(new MyUserInfo()); //需要实现Jsch包中的UserInfo,UIKeyboardInteractive接口，用以保存用户信息，以及进行键盘交互式认证并执行命令。
         Properties config = new Properties();
         config.put("StrictHostKeyChecking", "no");//在代码里需要跳过检测。否则会报错找不到主机
@@ -165,40 +166,3 @@ public class GrabPacketsService {
     }
 }
 
-
-class MyUserInfo implements UserInfo {
-    @Override
-    public String getPassphrase() {
-        System.out.println("getPassphrase");
-        return null;
-    }
-
-    @Override
-    public String getPassword() {
-        System.out.println("getPassword");
-        return null;
-    }
-
-    @Override
-    public boolean promptPassword(String s) {
-        System.out.println("promptPassword:" + s);
-        return false;
-    }
-
-    @Override
-    public boolean promptPassphrase(String s) {
-        System.out.println("promptPassphrase:" + s);
-        return false;
-    }
-
-    @Override
-    public boolean promptYesNo(String s) {
-        System.out.println("promptYesNo:" + s);
-        return true;//notice here!
-    }
-
-    @Override
-    public void showMessage(String s) {
-        System.out.println("showMessage:" + s);
-    }
-}

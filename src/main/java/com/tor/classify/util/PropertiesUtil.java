@@ -47,7 +47,7 @@ public class PropertiesUtil {
         return props.getProperty("remote_name");
     }
 
-    public static String getgetRemoteRootPassword(){
+    public static String getRemoteRootPassword(){
         return props.getProperty("remote_password");
     }
     public static String getRemotePcapPath(){
@@ -63,4 +63,10 @@ public class PropertiesUtil {
         return Integer.parseInt(props.getProperty("http_proxy_port"));
     }
 
+    public static String getRemoteFilePath(){
+        return props.getProperty("remote_file_path");
+    }
+    public static String getLocalFilePath(){
+        return props.getProperty("local_file_path");
+    }
 }
